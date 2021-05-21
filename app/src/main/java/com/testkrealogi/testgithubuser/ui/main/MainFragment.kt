@@ -153,9 +153,14 @@ class MainFragment : BaseFragment() {
       historyAdapter.swapData(histories)
     })
 
+    binding.tvNoData.visibility = View.GONE
     if (viewModel.searchText.isEmpty()) {
       binding.rvHistory.visibility = View.VISIBLE
       binding.rvUser.visibility = View.GONE
+      binding.tvNoData.visibility = View.GONE
+    } else if (viewModel.users.size > 0) {
+      binding.rvHistory.visibility = View.GONE
+      binding.rvUser.visibility = View.VISIBLE
       binding.tvNoData.visibility = View.GONE
     }
   }

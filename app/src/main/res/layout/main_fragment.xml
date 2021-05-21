@@ -54,21 +54,21 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintBottom_toBottomOf="parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvHistory"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvUser"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <TextView
         android:id="@+id/tvNoData"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/no_data"
         android:gravity="center"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvUser"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvHistory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
   </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
