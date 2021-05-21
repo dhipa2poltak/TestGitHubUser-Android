@@ -1,0 +1,10 @@
+<resources>
+  <string name="app_name">TestGitHubUser</string>
+  <string name="search_action">search action</string>
+  <string name="type_name">type name</string>
+  <string name="user_image">user image</string>
+  <string name="loading">loading…</string>
+  <string name="no_data">No Data</string>
+  <string name="todo">TODO</string>
+  <string name="textview">TextView</string>
+</resources>
