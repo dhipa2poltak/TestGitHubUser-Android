@@ -5,6 +5,8 @@ import com.squareup.picasso.Picasso
 import com.testkrealogi.testgithubuser.Config
 import com.testkrealogi.testgithubuser.dao.HistoryDao
 import com.testkrealogi.testgithubuser.database.HistoryDatabase
+import com.testkrealogi.testgithubuser.repository.MainRepository
+import com.testkrealogi.testgithubuser.repository.MainRepositoryImpl
 import com.testkrealogi.testgithubuser.rest.RestService
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
@@ -18,6 +20,7 @@ val appModule = module {
 
   single { provideDatabase(androidContext()) }
   single { provideHistoryDao(get()) }
+  single { provideMainRepository(get(), get()) }
 
   single { provideOkHttpClient() }
   single { provideRetrofit(get(), Config.API_BASE_URL) }
@@ -26,6 +29,10 @@ val appModule = module {
 
 fun providePicasso(context: Context): Picasso {
   return Picasso.Builder(context).build()
+}
+
+fun provideMainRepository(restService: RestService, historyDao: HistoryDao): MainRepository {
+  return MainRepositoryImpl(restService, historyDao)
 }
 
 fun provideDatabase(context: Context): HistoryDatabase {

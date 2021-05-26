@@ -108,7 +108,7 @@ class MainFragment : BaseFragment() {
     viewModel.toastMessage.observe(viewLifecycleOwner, { value ->
       if (value != null && value.isNotEmpty()) {
         Toast.makeText(requireContext(), value, Toast.LENGTH_SHORT).show()
-        viewModel.toastMessage.value = null
+        viewModel.clearToastMessage()
       }
     })
 
@@ -125,7 +125,7 @@ class MainFragment : BaseFragment() {
     viewModel.doNotifyUserDataSetChanged.observe(viewLifecycleOwner, { value ->
       if (value != null && value) {
         userAdapter.notifyDataSetChanged()
-        viewModel.doNotifyUserDataSetChanged.value = null
+        viewModel.clearNotifyUserDataSetChanged()
       }
     })
 
@@ -181,8 +181,8 @@ class MainFragment : BaseFragment() {
         binding.rvHistory.visibility = View.VISIBLE
         binding.rvUser.visibility = View.GONE
         binding.tvNoData.visibility = View.GONE
-        viewModel.doShowResult.value = null
-        viewModel.doShowNoData.value = null
+        viewModel.clearShowResult()
+        viewModel.clearShowNoData()
       }
     }
   }

@@ -18,15 +18,33 @@ import java.util.ArrayList
 class MainViewModel(private val mainRepository: MainRepository) : BaseViewModel() {
 
   val users: ArrayList<User> = ArrayList()
-  val userData = MutableLiveData<User>()
-  var page = 1
-  var searchText = ""
-  var doNotifyUserDataSetChanged = MutableLiveData(false)
-  var doShowResult = MutableLiveData(false)
-  var doShowNoData = MutableLiveData(false)
+
+  private val mUserData = MutableLiveData<User>()
+  private var mDoNotifyUserDataSetChanged = MutableLiveData(false)
+  private var mDoShowResult = MutableLiveData(false)
+  private var mDoShowNoData = MutableLiveData(false)
 
   var isNewSearch = true
   var isAllDataLoaded = false
+  var page = 1
+  var searchText = ""
+
+  val userData: LiveData<User> get() = mUserData
+  val doNotifyUserDataSetChanged: LiveData<Boolean> get() = mDoNotifyUserDataSetChanged
+  val doShowResult: LiveData<Boolean> get() = mDoShowResult
+  val doShowNoData: LiveData<Boolean> get() = mDoShowNoData
+
+  fun clearNotifyUserDataSetChanged() {
+    mDoNotifyUserDataSetChanged.value = null
+  }
+
+  fun clearShowResult() {
+    mDoShowResult.value = null
+  }
+
+  fun clearShowNoData() {
+    mDoShowNoData.value = null
+  }
 
   fun getHistoriesLiveData(): LiveData<List<History>> {
     return mainRepository.getHistoriesLiveData()
@@ -54,7 +72,7 @@ class MainViewModel(private val mainRepository: MainRepository) : BaseViewModel(
 
   fun processInputUserName() {
     if (searchText.isEmpty()) {
-      toastMessage.value = "please input the username"
+      mToastMessage.value = "please input the username"
       return
     }
 
@@ -71,17 +89,17 @@ class MainViewModel(private val mainRepository: MainRepository) : BaseViewModel(
       return
     }
 
-    isShowDialogLoading.postValue(true)
+    mIsShowDialogLoading.postValue(true)
     isLoadingData = true
 
     viewModelScope.launch {
       when (val searchUsersResponse = mainRepository.searchUsers(q, page, perPage)) {
-        is NetworkError -> toastMessage.value = "network error"
-        is GenericError -> toastMessage.value = "error ${searchUsersResponse.code} ${searchUsersResponse.error?.message}"
+        is NetworkError -> mToastMessage.value = "network error"
+        is GenericError -> mToastMessage.value = "error ${searchUsersResponse.code} ${searchUsersResponse.error?.message}"
         is Success -> doSuccess(searchUsersResponse.value, page)
       }
 
-      isShowDialogLoading.postValue(false)
+      mIsShowDialogLoading.postValue(false)
       isLoadingData = false
     }
   }
@@ -91,15 +109,15 @@ class MainViewModel(private val mainRepository: MainRepository) : BaseViewModel(
 
       if (isNewSearch) {
         users.clear()
-        doNotifyUserDataSetChanged.value = true
+        mDoNotifyUserDataSetChanged.value = true
         isNewSearch = false
 
-        doShowResult.value = true
+        mDoShowResult.value = true
       }
 
       for (user in response.items!!) {
         users.add(user)
-        userData.value = user
+        mUserData.value = user
       }
 
       this@MainViewModel.page = page
@@ -109,7 +127,7 @@ class MainViewModel(private val mainRepository: MainRepository) : BaseViewModel(
         isAllDataLoaded = true
       }
     } else {
-      doShowNoData.value = users.size == 0
+      mDoShowNoData.value = users.size == 0
     }
   }
 }
