@@ -9,7 +9,7 @@ android {
   compileSdkVersion 30
 
   defaultConfig {
-    applicationId "com.testkrealogi.testgithubuser"
+    applicationId "com.dpfht.testgithubuser"
     minSdkVersion 16
     targetSdkVersion 30
     versionCode 1
